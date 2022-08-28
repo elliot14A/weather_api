@@ -30,7 +30,7 @@ const getWeatherHandler = async (
   const cities = req.body.cities;
   const API_KEY = process.env.API_KEY;
   const LOCATION_API_BASE_URL = `http://dataservice.accuweather.com/`;
-  const response = { "weather": new Map() };
+  const response = { weather: new Map() };
   for (let city of cities) {
     let URL =
       LOCATION_API_BASE_URL +
@@ -38,9 +38,9 @@ const getWeatherHandler = async (
       `apikey=${API_KEY}&q=${city}`;
     const res1 = await fetch(URL);
     const data1: GetLocationKey[] = await res1.json();
-    if('Code' in data1) {return res.send(data1)}
+    //The Api returns Error with Code Property so if Property Code exists there's an error occured from the server side
+    if ("Code" in data1) return res.send(data1).status(500);
     if (data1.length == 0) return res.send(`${city} Not Found`).status(404);
-    console.log(data1)
     if (!data1[0].Key) return res.send("Internal Server Error").status(500);
     const locationKey = parseInt(data1[0].Key);
 
