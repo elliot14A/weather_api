@@ -38,7 +38,7 @@ const getWeatherHandler = async (
       `apikey=${API_KEY}&q=${city}`;
     const res1 = await fetch(URL);
     const data1: GetLocationKey[] = await res1.json();
-    //The Api returns Error with Code Property so if Property Code exists there's an error occured from the server side
+    //The Api returns Error with Code Property so if Property Code exists there's an error occured in the server
     if ("Code" in data1) return res.send(data1).status(500);
     if (data1.length == 0) return res.send(`${city} Not Found`).status(404);
     if (!data1[0].Key) return res.send("Internal Server Error").status(500);
